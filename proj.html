@@ -1,0 +1,164 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 840px;
+                 background-color: black;
+                 border: 1px solid rgb(71, 69, 69);
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "grey", "font": {"color": "white"}, "id": "Cybersecurity", "label": "Cybersecurity", "shape": "dot", "value": 5}, {"color": "grey", "font": {"color": "white"}, "id": "Cybersecurity Specialist", "label": "Cybersecurity Specialist", "shape": "dot", "value": 4}, {"color": "grey", "font": {"color": "white"}, "id": "IT Auditor", "label": "IT Auditor", "shape": "dot", "value": 4}, {"color": "grey", "font": {"color": "white"}, "id": "Cybersecurity Analyst", "label": "Cybersecurity Analyst", "shape": "dot", "value": 4}, {"color": "grey", "font": {"color": "white"}, "id": "Cybersecurity Consultant", "label": "Cybersecurity Consultant", "shape": "dot", "value": 4}, {"color": "grey", "font": {"color": "white"}, "id": "Penetration Testing", "label": "Penetration Testing", "shape": "dot", "value": 4}, {"color": "grey", "font": {"color": "white"}, "id": "Cybersecurity Engineer", "label": "Cybersecurity Engineer", "shape": "dot", "value": 4}, {"color": "grey", "font": {"color": "white"}, "id": "Cybersecurity Architect", "label": "Cybersecurity Architect", "shape": "dot", "value": 4}, {"color": "grey", "font": {"color": "white"}, "id": "Cybersecurity Manager", "label": "Cybersecurity Manager", "shape": "dot", "value": 4}, {"color": "grey", "font": {"color": "white"}, "id": "Information Security", "label": "Information Security", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Information Systems", "label": "Information Systems", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Information Assurance", "label": "Information Assurance", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Network Security", "label": "Network Security", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Security Operations", "label": "Security Operations", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Vulnerability Assessment", "label": "Vulnerability Assessment", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Project Management", "label": "Project Management", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Linux", "label": "Linux", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "NIST Cybersecurity Framework", "label": "NIST Cybersecurity Framework", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Internal Auditing", "label": "Internal Auditing", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Audit Planning", "label": "Audit Planning", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": "Sarbane", "label": "Sarbane", "shape": "dot", "value": 1}, {"color": "grey", "font": {"color": "white"}, "id": " Surveillance", "label": " Surveillance", "shape": "dot", "value": 2}, {"color": "grey", "font": {"color": "white"}, "id": "Oracle", "label": "Oracle", "shape": "dot", "value": 2}, {"color": "grey", "font": {"color": "white"}, "id": "Asset Protection", "label": "Asset Protection", "shape": "dot", "value": 2}, {"color": "grey", "font": {"color": "white"}, "id": "Python", "label": "Python", "shape": "dot", "value": 2}, {"color": "grey", "font": {"color": "white"}, "id": "Prevention of Criminal Activity", "label": "Prevention of Criminal Activity", "shape": "dot", "value": 2}, {"color": "grey", "font": {"color": "white"}, "id": "Java", "label": "Java", "shape": "dot", "value": 2}, {"color": "grey", "font": {"color": "white"}, "id": "Software Development", "label": "Software Development", "shape": "dot", "value": 2}, {"color": "grey", "font": {"color": "white"}, "id": "Cryptography", "label": "Cryptography", "shape": "dot", "value": 3}, {"color": "grey", "font": {"color": "white"}, "id": "Cisco", "label": "Cisco", "shape": "dot", "value": 3}, {"color": "grey", "font": {"color": "white"}, "id": "Authentication", "label": "Authentication", "shape": "dot", "value": 3}, {"color": "grey", "font": {"color": "white"}, "id": "Risk Management Framework", "label": "Risk Management Framework", "shape": "dot", "value": 3}, {"color": "grey", "font": {"color": "white"}, "id": " SAP", "label": " SAP", "shape": "dot", "value": 3}]);
+                  edges = new vis.DataSet([{"from": "Cybersecurity", "to": "Cybersecurity Specialist"}, {"from": "Cybersecurity", "to": "IT Auditor"}, {"from": "Cybersecurity", "to": "Cybersecurity Analyst"}, {"from": "Cybersecurity", "to": "Cybersecurity Consultant"}, {"from": "Cybersecurity", "to": "Penetration Testing"}, {"from": "Cybersecurity", "to": "Cybersecurity Engineer"}, {"from": "Cybersecurity", "to": "Cybersecurity Architect"}, {"from": "Cybersecurity", "to": "Cybersecurity Manager"}, {"from": "Cybersecurity Specialist", "to": "Cybersecurity Analyst"}, {"from": "Cybersecurity Specialist", "to": "Cybersecurity Consultant"}, {"from": "Cybersecurity Specialist", "to": "Penetration Testing"}, {"from": "IT Auditor", "to": "Cybersecurity Consultant"}, {"from": "IT Auditor", "to": "Penetration Testing"}, {"from": "Cybersecurity Analyst", "to": "Cybersecurity Engineer"}, {"from": "Cybersecurity Analyst", "to": "Cybersecurity Architect"}, {"from": "Cybersecurity Analyst", "to": "Cybersecurity Manager"}, {"from": "Cybersecurity Analyst", "to": "Cybersecurity Consultant"}, {"from": "Cybersecurity Consultant", "to": "Cybersecurity Engineer"}, {"from": "Cybersecurity Consultant", "to": "Cybersecurity Architect"}, {"from": "Cybersecurity Consultant", "to": "Cybersecurity Manager"}, {"from": "Penetration Testing", "to": "Cybersecurity Engineer"}, {"from": "Penetration Testing", "to": "Cybersecurity Architect"}, {"from": "Penetration Testing", "to": "Cybersecurity Analyst"}, {"from": "Penetration Testing", "to": "Cybersecurity Consultant"}, {"from": "Cybersecurity Engineer", "to": "Cybersecurity Manager"}, {"from": "Cybersecurity Engineer", "to": "Cybersecurity Architect"}, {"from": "Cybersecurity Architect", "to": "Cybersecurity Manager"}, {"from": "Cybersecurity Specialist", "to": "Information Security"}, {"from": "Cybersecurity Specialist", "to": "Information Systems"}, {"from": "Cybersecurity Specialist", "to": "Information Assurance"}, {"from": "Cybersecurity Specialist", "to": "Network Security"}, {"from": "Cybersecurity Specialist", "to": "Security Operations"}, {"from": "Cybersecurity Specialist", "to": "Vulnerability Assessment"}, {"from": "Cybersecurity Specialist", "to": "Project Management"}, {"from": "Cybersecurity Specialist", "to": "Linux"}, {"from": "Cybersecurity Specialist", "to": "NIST Cybersecurity Framework"}, {"from": "IT Auditor", "to": "Internal Auditing"}, {"from": "IT Auditor", "to": "Audit Planning"}, {"from": "IT Auditor", "to": "Information Systems"}, {"from": "IT Auditor", "to": "Sarbane"}, {"from": "Cybersecurity Consultant", "to": "Information Security"}, {"from": "Cybersecurity Consultant", "to": " Surveillance"}, {"from": "Cybersecurity Consultant", "to": "Information Systems"}, {"from": "Cybersecurity Consultant", "to": "Oracle"}, {"from": "Cybersecurity Consultant", "to": "Project Management"}, {"from": "Cybersecurity Consultant", "to": "Asset Protection"}, {"from": "Cybersecurity Consultant", "to": "Python"}, {"from": "Cybersecurity Consultant", "to": "Prevention of Criminal Activity"}, {"from": "Cybersecurity Consultant", "to": "Security Operations"}, {"from": "Penetration Testing", "to": "Information Security"}, {"from": "Penetration Testing", "to": "Linux"}, {"from": "Penetration Testing", "to": "Python"}, {"from": "Penetration Testing", "to": "Java"}, {"from": "Penetration Testing", "to": "Vulnerability Assessment"}, {"from": "Penetration Testing", "to": "Information Systems"}, {"from": "Penetration Testing", "to": "Software Development"}, {"from": "Penetration Testing", "to": "Project Management"}, {"from": "Cybersecurity Engineer", "to": "Information Security"}, {"from": "Cybersecurity Engineer", "to": "Network Security"}, {"from": "Cybersecurity Engineer", "to": "Linux"}, {"from": "Cybersecurity Engineer", "to": "Information Systems"}, {"from": "Cybersecurity Engineer", "to": "Python"}, {"from": "Cybersecurity Engineer", "to": "Cryptography"}, {"from": "Cybersecurity Engineer", "to": "Project Management"}, {"from": "Cybersecurity Engineer", "to": "Cisco"}, {"from": "Cybersecurity Engineer", "to": "Authentication"}, {"from": "Cybersecurity Architect", "to": "Information Security"}, {"from": "Cybersecurity Architect", "to": "Network Security"}, {"from": "Cybersecurity Architect", "to": "Cryptography"}, {"from": "Cybersecurity Architect", "to": "Information Systems"}, {"from": "Cybersecurity Architect", "to": "Authentication"}, {"from": "Cybersecurity Architect", "to": "Linux"}, {"from": "Cybersecurity Architect", "to": "Software Development"}, {"from": "Cybersecurity Architect", "to": "Cisco"}, {"from": "Cybersecurity Architect", "to": "NIST Cybersecurity Framework"}, {"from": "Cybersecurity Manager", "to": "Information Security"}, {"from": "Cybersecurity Manager", "to": "Information Systems"}, {"from": "Cybersecurity Manager", "to": "Project Management"}, {"from": "Cybersecurity Manager", "to": "Information Assurance"}, {"from": "Cybersecurity Manager", "to": "Linux"}, {"from": "Cybersecurity Manager", "to": "Network Security"}, {"from": "Cybersecurity Manager", "to": "NIST Cybersecurity Framework"}, {"from": "Cybersecurity Manager", "to": "Risk Management Framework"}, {"from": "Cybersecurity Manager", "to": " SAP"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 1,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -50,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
